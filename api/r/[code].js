@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   // Ophalen uit Supabase
   const response = await fetch(
-    `${process.env.SUPABASE_URL}/rest/v1/qr?code=eq.${code}&select=id,target_url,clicks`,
+    `${process.env.SUPABASE_URL}/rest/v1/qr_links?code=eq.${code}&select=id,target_url,clicks`,
     {
       headers: {
         apikey: process.env.SUPABASE_KEY,
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
 
   // Klik teller ophogen in de achtergrond
   fetch(
-    `${process.env.SUPABASE_URL}/rest/v1/qr?id=eq.${link.id}`,
+    `${process.env.SUPABASE_URL}/rest/v1/qr_links?id=eq.${link.id}`,
     {
       method: 'PATCH',
       headers: {
