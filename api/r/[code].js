@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   // Niet gevonden → 404
   if (!link) {
-    return res.status(404).send('QR code niet gevonden');
+    return res.status(404).send('QR code niet gevonden' + code);
   }
 
   // Klik teller ophogen in de achtergrond
