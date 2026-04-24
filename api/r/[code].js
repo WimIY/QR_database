@@ -28,16 +28,16 @@ export default async function handler(req, res) {
     const link = data[0];
 
     // Klik teller ophogen (we wachten hier NIET op met await om de snelheid hoog te houden)
-    fetch(`${process.env.SUPABASE_URL}/rest/v1/qr_links?id=eq.${link.id}`, {
-      method: 'PATCH',
-      headers: {
-        apikey: process.env.SUPABASE_KEY,
-        Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({ clicks: (link.clicks || 0) + 1 })
-    }).catch(err => console.error("Update kliks mislukt:", err));
+// Vervang je oude fetch(PATCH...) door dit:
+fetch(`${process.env.SUPABASE_URL}/rest/v1/rpc/increment_clicks`, {
+  method: 'POST',
+  headers: {
+    apikey: process.env.SUPABASE_KEY,
+    Authorization: `Bearer ${process.env.SUPABASE_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({ row_id: link.id })
+}).catch(err => console.error("Update mislukt:", err));
 
     // Doorsturen
     return res.redirect(302, link.target_url);
